@@ -23,7 +23,6 @@ class HillClimbingSolver(CubeSolver):
         iteration = 0
         iterations = []
         objective_values = []
-
         start_time = datetime.now()
 
         plt.ion()
@@ -44,9 +43,10 @@ class HillClimbingSolver(CubeSolver):
         plt.pause(0.1)
 
         while True:
+            iteration += 1
             iterations.append(iteration)
             objective_values.append(current_value)
-
+            print("Iteration",iteration)
             ax1.clear()
             ax1.plot(iterations, objective_values, color='blue')
             ax1.set_xlabel('Iteration')
@@ -85,7 +85,7 @@ class HillClimbingSolver(CubeSolver):
                 end_time = datetime.now()
                 duration = (end_time - start_time).total_seconds() * 1000
 
-                fig2.text(0.5, 0.05, f'Final Objective Value: {best_value} | Duration: {duration} ms', ha='center', fontsize=10)
+                fig2.text(0.5, 0.05, f'Final Objective Value: {best_value} | Duration: {duration} ms | Iteration: {iteration}', ha='center', fontsize=10)
 
                 for ax in axes_initial:
                     ax.set_title('Initial State', fontsize=8)
@@ -97,7 +97,6 @@ class HillClimbingSolver(CubeSolver):
 
             current_state = best_neighbor
             current_value = best_value
-            iteration += 1
 
     def sideways_move_hill_climbing(self, title = "Sideways Move Hill Climbing"):
         current_state = self.generate_random_initial_state()
@@ -127,6 +126,7 @@ class HillClimbingSolver(CubeSolver):
         plt.pause(0.1)
 
         while True:
+            iteration += 1
             iterations.append(iteration)
             objective_values.append(current_value)
 
@@ -168,7 +168,7 @@ class HillClimbingSolver(CubeSolver):
                 end_time = datetime.now()
                 duration = (end_time - start_time).total_seconds() * 1000
 
-                fig2.text(0.5, 0.05, f'Final Objective Value: {best_value} | Duration: {duration} ms', ha='center', fontsize=10)
+                fig2.text(0.5, 0.05, f'Final Objective Value: {best_value} | Duration: {duration} ms | Iteration: {iteration}', ha='center', fontsize=10)
 
                 for ax in axes_initial:
                     ax.set_title('Initial State', fontsize=8)
@@ -180,7 +180,6 @@ class HillClimbingSolver(CubeSolver):
 
             current_state = best_neighbor
             current_value = best_value
-            iteration += 1
 
 
     def random_restart_hill_climbing(self, max_restart):
@@ -197,7 +196,7 @@ class HillClimbingSolver(CubeSolver):
         current_state = self.generate_random_initial_state()
         initial_state = current_state.copy()
         current_value = self.calculate_objective(current_state)
-        iteration = 0
+        iteration = 1
         iterations = []
         objective_values = []
         
@@ -210,7 +209,6 @@ class HillClimbingSolver(CubeSolver):
         ax1 = fig.add_subplot(gs[0])
         ax1.set_xlabel('Iteration')
         ax1.set_ylabel('Objective Value')
-        
         ax1.set_title('Stochastic Hill Climbing Objective Value over Iterations')
 
         gs2 = gs[1].subgridspec(1, 5)
@@ -219,7 +217,7 @@ class HillClimbingSolver(CubeSolver):
         self.visualize_state(current_state,axes=cube_axes)
         plt.pause(0.1)
 
-        while iteration <= max_iteration:
+        while iteration < max_iteration:
             iterations.append(iteration)
             objective_values.append(current_value)
              
@@ -237,9 +235,7 @@ class HillClimbingSolver(CubeSolver):
             if neighbor_value > current_value:
                 current_state = random_neighbor
                 current_value = neighbor_value
-
             iteration += 1
-
         plt.ioff()
         fig2 = plt.figure(figsize=(12, 6))
         fig2.suptitle('Initial and Final States')
@@ -255,7 +251,7 @@ class HillClimbingSolver(CubeSolver):
         end_time = datetime.now()
         duration = (end_time - start_time).total_seconds() * 1000
 
-        fig2.text(0.5, 0.05, f'Final Objective Value: {current_value} Duration: {duration} ms', ha='center', fontsize=10)
+        fig2.text(0.5, 0.05, f'Final Objective Value: {current_value} | Duration: {duration} ms | Iteration: {iteration}', ha='center', fontsize=10)
 
         for ax in axes_initial:
             ax.set_title('Initial State', fontsize=8)
