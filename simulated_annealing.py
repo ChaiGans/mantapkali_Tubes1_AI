@@ -31,20 +31,19 @@ class SimulatedAnnealingSolver(CubeSolver):
 
         plt.ion()  
         fig = plt.figure(figsize=(14,14))
-        gs = fig.add_gridspec(nrows=3, ncols=1, height_ratios=[1, 1, 2])
-
+        gs = fig.add_gridspec(nrows=5, ncols=1, height_ratios=[2,0.5,2,0.5,2])
         ax = fig.add_subplot(gs[0])
         ax.set_xlabel('Iteration')
         ax.set_ylabel('Objective Value')
         ax.set_title('Simulated Annealing Objective Value over Iterations')
 
-        ax2 = fig.add_subplot(gs[1])
+        ax2 = fig.add_subplot(gs[2])
         ax2.margins(0.3)
         ax2.set_xlabel('Iteration')
         ax2.set_ylabel('e^(ΔE/T)')
         ax2.set_title('Exponential Acceptance Probability over Iterations')
         
-        gs2 = gs[2].subgridspec(1, 5)
+        gs2 = gs[4].subgridspec(1, 5)
         cube_axes = [fig.add_subplot(gs2[0, i]) for i in range(5)]
 
         self.visualize_state(current_state,axes=cube_axes)
