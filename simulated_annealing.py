@@ -23,22 +23,28 @@ class SimulatedAnnealingSolver(CubeSolver):
         temperature = initial_temp
         iteration = 0
         iterations = []
+        exp_values = []
         objective_values = []
         stuck_count = 0
 
         start_time = datetime.now()
 
         plt.ion()  
-        fig = plt.figure(figsize=(10, 8))
-        gs = fig.add_gridspec(nrows=2, ncols=1, height_ratios=[1, 2])
+        fig = plt.figure(figsize=(14,14))
+        gs = fig.add_gridspec(nrows=3, ncols=1, height_ratios=[1, 1, 2])
 
         ax = fig.add_subplot(gs[0])
         ax.set_xlabel('Iteration')
         ax.set_ylabel('Objective Value')
         ax.set_title('Simulated Annealing Objective Value over Iterations')
 
+        ax2 = fig.add_subplot(gs[1])
+        ax2.margins(0.3)
+        ax2.set_xlabel('Iteration')
+        ax2.set_ylabel('e^(ΔE/T)')
+        ax2.set_title('Exponential Acceptance Probability over Iterations')
         
-        gs2 = gs[1].subgridspec(1, 5)
+        gs2 = gs[2].subgridspec(1, 5)
         cube_axes = [fig.add_subplot(gs2[0, i]) for i in range(5)]
 
         self.visualize_state(current_state,axes=cube_axes)
@@ -58,7 +64,12 @@ class SimulatedAnnealingSolver(CubeSolver):
             neighbor_value = self.calculate_objective(neighbor)
             
             delta_e = neighbor_value - current_value
+            capped_delta_e_over_temp = min(delta_e / temperature, 700)  
+            exp_value = math.exp(capped_delta_e_over_temp)
+            exp_values.append(exp_value)
             
+            ax2.plot(iterations, exp_values, color='blue')
+
             if delta_e > 0 or math.exp(delta_e / temperature) > random.random():
                 current_state = neighbor
                 current_value = neighbor_value
