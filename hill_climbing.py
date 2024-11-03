@@ -181,3 +181,16 @@ class HillClimbingSolver(CubeSolver):
             current_state = best_neighbor
             current_value = best_value
             iteration += 1
+
+
+    def random_restart_hill_climbing(self, max_restart):
+        all_state = []
+        for i in range(max_restart):
+            title = f"Restart {i + 1}"
+            final_state , iteration = self.steepest_ascent_hill_climbing(title)
+            print("Num of iteration for restart ", i+1 , ": " , iteration)
+            all_state.append([final_state,iteration])
+
+        return all_state[-1][0], all_state[-1][1]
+    
+    
