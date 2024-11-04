@@ -26,7 +26,7 @@ if __name__ == "__main__":
         if(hill_choice == 1):
             solution,iteration  = solver.steepest_ascent_hill_climbing()
         elif(hill_choice == 2):
-            solution, iteration = solver.sideways_move_hill_climbing()
+            solution, iteration = solver.sideways_move_hill_climbing(max_sideways_move=30)
         elif(hill_choice == 3):
             solution, iteration = solver.random_restart_hill_climbing(7)
         elif(hill_choice == 4):

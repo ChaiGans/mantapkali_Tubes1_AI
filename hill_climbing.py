@@ -98,13 +98,14 @@ class HillClimbingSolver(CubeSolver):
             current_state = best_neighbor
             current_value = best_value
 
-    def sideways_move_hill_climbing(self, title = "Sideways Move Hill Climbing"):
+    def sideways_move_hill_climbing(self, title = "Sideways Move Hill Climbing", max_sideways_move = 20):
         current_state = self.generate_random_initial_state()
         current_value = self.calculate_objective(current_state)
         initial_state = current_state.copy() 
         iteration = 0
         iterations = []
         objective_values = []
+        sideways_count = 0
 
         start_time = datetime.now()
 
@@ -151,8 +152,8 @@ class HillClimbingSolver(CubeSolver):
                 if neighbor_value > best_value:
                     best_value = neighbor_value
                     best_neighbor = neighbor
-
-            if best_value < current_value:
+            
+            if sideways_count >= max_sideways_move or best_value < current_value:
                 plt.ioff()
                 fig2 = plt.figure(figsize=(12, 6))
                 fig2.suptitle('Initial and Final States')
@@ -177,10 +178,14 @@ class HillClimbingSolver(CubeSolver):
 
                 plt.show()
                 return current_state, iteration
+            
+            if best_value == current_value:
+                sideways_count += 1
+            else:
+                sideways_count = 0
 
             current_state = best_neighbor
             current_value = best_value
-
 
     def random_restart_hill_climbing(self, max_restart):
         all_state = []
