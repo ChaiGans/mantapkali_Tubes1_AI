@@ -190,7 +190,16 @@ class HillClimbingSolver(CubeSolver):
             print("Num of iteration for restart ", i+1 , ": " , iteration)
             all_state.append([final_state,iteration])
 
-        return all_state[-1][0], all_state[-1][1]
+        temp = float("-inf")
+        selected_index = -1
+        for k in range(len(all_state)):
+            value = self.calculate_objective(all_state[k][0])
+
+            if value > temp:
+                temp = value
+                selected_index = k
+        
+        return all_state[selected_index][0], all_state[selected_index][1]
     
     def stochastic_hill_climbing(self, max_iteration = 100): 
         current_state = self.generate_random_initial_state()
