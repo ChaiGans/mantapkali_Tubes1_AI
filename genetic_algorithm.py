@@ -5,7 +5,7 @@ from datetime import datetime
 from base_solver import CubeSolver
 
 class GeneticAlgorithmSolver(CubeSolver):
-    def __init__(self, population_size=50, num_iterations=100):
+    def __init__(self, population_size, num_iterations):
         super().__init__()
         self.population_size = population_size
         self.num_iterations = num_iterations
@@ -159,7 +159,7 @@ class GeneticAlgorithmSolver(CubeSolver):
         end_time = datetime.now()
         duration = (end_time - start_time).total_seconds() * 1000
 
-        fig2.text(0.5, 0.05, f'Final Objective Value: {best_final_value} Duration: {duration} ms Population Size: {self.population_size}', ha='center', fontsize=10)
+        fig2.text(0.5, 0.05, f'Final Objective Value: {best_final_value} | Duration: {duration} ms | Population Size: {self.population_size} | Iteration: {self.num_iterations}', ha='center', fontsize=10)
 
         for ax in axes_initial:
             ax.set_title('Initial State', fontsize=8)

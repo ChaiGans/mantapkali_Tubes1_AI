@@ -30,7 +30,7 @@ if __name__ == "__main__":
         elif(hill_choice == 3):
             solution, iteration = solver.random_restart_hill_climbing(7)
         elif(hill_choice == 4):
-            solution, iteration = solver.stochastic_hill_climbing(100)
+            solution, iteration = solver.stochastic_hill_climbing(500)
 
         print("Final state:", solution)
         print("Iteration: ", iteration)
@@ -42,11 +42,11 @@ if __name__ == "__main__":
         print("Final state:", solution)
         print("Objective value:", solver.calculate_objective(solution))
     elif choice == 3:
-        solver = GeneticAlgorithmSolver()
+        solver = GeneticAlgorithmSolver(50,100)
         solution = solver.run()
         print("Final state:", solution)
         print("Objective value:", solver.calculate_objective(solution))
     else:
         print("Invalid choice. Please select 1, 2, or 3.")
-
+ 
 
