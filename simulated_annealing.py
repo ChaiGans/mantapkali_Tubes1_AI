@@ -14,7 +14,7 @@ class SimulatedAnnealingSolver(CubeSolver):
         neighbor[i], neighbor[j] = neighbor[j], neighbor[i]
         return neighbor
 
-    def simulated_annealing(self, initial_temp=1000, cooling_rate=0.95, min_temp=1):
+    def simulated_annealing(self, initial_temp=1000, cooling_rate=0.99, min_temp=0.1):
         current_state = self.state
         initial_state = current_state.copy()
         current_value = self.calculate_objective(current_state)
@@ -74,7 +74,7 @@ class SimulatedAnnealingSolver(CubeSolver):
             valid_exp_values = [v for v in exp_values if v is not None]
             valid_iterations = [iterations[i] for i, v in enumerate(exp_values) if v is not None]
             ax2.plot(valid_iterations, valid_exp_values, color='blue')
-            if delta_e > 0 or exp_value > random.random():
+            if delta_e >= 0 or exp_value > random.random():
                 current_state = neighbor
                 current_value = neighbor_value
                 
