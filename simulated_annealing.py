@@ -14,7 +14,7 @@ class SimulatedAnnealingSolver(CubeSolver):
         neighbor[i], neighbor[j] = neighbor[j], neighbor[i]
         return neighbor
 
-    def simulated_annealing(self, initial_temp=1000, cooling_rate=0.99, min_temp=0.01):
+    def simulated_annealing(self, initial_temp=1000, cooling_rate=0.95, min_temp=1):
         current_state = self.state
         initial_state = current_state.copy()
         current_value = self.calculate_objective(current_state)
@@ -102,7 +102,7 @@ class SimulatedAnnealingSolver(CubeSolver):
         end_time = datetime.now()
         duration = (end_time - start_time).total_seconds() * 1000
 
-        fig2.text(0.5, 0.05, f'Final Objective Value: {current_value} Duration: {duration} ms', ha='center', fontsize=10)
+        fig2.text(0.5, 0.05, f'Final Objective Value: {current_value} Duration: {duration} ms Stuck Count: {stuck_count}' , ha='center', fontsize=10)
 
         for ax in axes_initial:
             ax.set_title('Initial State', fontsize=8)
