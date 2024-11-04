@@ -14,7 +14,7 @@ class SimulatedAnnealingSolver(CubeSolver):
         neighbor[i], neighbor[j] = neighbor[j], neighbor[i]
         return neighbor
 
-    def simulated_annealing(self, initial_temp=1000, cooling_rate=0.99, min_temp=0.01):
+    def simulated_annealing(self, initial_temp=1000, cooling_rate=0.95, min_temp=1):
         current_state = self.state
         initial_state = current_state.copy()
         current_value = self.calculate_objective(current_state)
@@ -63,13 +63,18 @@ class SimulatedAnnealingSolver(CubeSolver):
             neighbor_value = self.calculate_objective(neighbor)
             
             delta_e = neighbor_value - current_value
-            capped_delta_e_over_temp = min(delta_e / temperature, 700)  
-            exp_value = math.exp(capped_delta_e_over_temp)
-            exp_values.append(exp_value)
-            
-            ax2.plot(iterations, exp_values, color='blue')
 
-            if delta_e > 0 or math.exp(delta_e / temperature) > random.random():
+            if delta_e < 0: 
+                capped_delta_e_over_temp = (delta_e/ temperature)
+                exp_value = math.exp(capped_delta_e_over_temp)
+                exp_values.append(exp_value)
+            else:
+                exp_values.append(None)  
+            
+            valid_exp_values = [v for v in exp_values if v is not None]
+            valid_iterations = [iterations[i] for i, v in enumerate(exp_values) if v is not None]
+            ax2.plot(valid_iterations, valid_exp_values, color='blue')
+            if delta_e > 0 or exp_value > random.random():
                 current_state = neighbor
                 current_value = neighbor_value
                 
@@ -78,7 +83,7 @@ class SimulatedAnnealingSolver(CubeSolver):
                     best_value = current_value
             else:
                 stuck_count += 1
-            
+                  
             temperature *= cooling_rate
             iteration += 1
 
@@ -97,7 +102,7 @@ class SimulatedAnnealingSolver(CubeSolver):
         end_time = datetime.now()
         duration = (end_time - start_time).total_seconds() * 1000
 
-        fig2.text(0.5, 0.05, f'Final Objective Value: {current_value} Duration: {duration} ms', ha='center', fontsize=10)
+        fig2.text(0.5, 0.05, f'Final Objective Value: {current_value} Duration: {duration} ms Stuck Count: {stuck_count}' , ha='center', fontsize=10)
 
         for ax in axes_initial:
             ax.set_title('Initial State', fontsize=8)
